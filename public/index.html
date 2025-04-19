@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SANIJA-MD Session Generator</title>
+</head>
+<body>
+    <h1>SANIJA-MD Pairing</h1>
+    <form id="sessionForm">
+        <input type="text" id="number" placeholder="Enter WhatsApp Number" required><br><br>
+        <input type="text" id="pairingCode" placeholder="Enter Pairing Code" required><br><br>
+        <button type="submit">Generate Session</button>
+    </form>
+
+    <h2 id="response"></h2>
+
+    <script>
+        document.getElementById('sessionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const number = document.getElementById('number').value.trim();
+            const pairingCode = document.getElementById('pairingCode').value.trim();
+
+            const response = await fetch('/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ number, pairingCode })
+            });
+
+            const data = await response.json();
+            document.getElementById('response').innerText = data.message || data.error;
+        });
+    </script>
+</body>
+</html>
